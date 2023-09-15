@@ -6,11 +6,12 @@ import javax.imageio.ImageIO;
 
 public class Door extends Item{
 	public Door() {
-		name = "Key";
+		name = "Door";
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/items/door.png"));
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
+		collison = true;
 	}
 }

@@ -13,7 +13,7 @@ import main.KeyController;
 
 public class Player extends Entity{
 	public final int screenX, screenY;
-	
+	int keyOwned = 0;
 	GamePanel gameP;
 	KeyController keyC;
 	
@@ -25,6 +25,8 @@ public class Player extends Entity{
 		screenX = gameP.screenWidth / 2 - (gameP.finalTileSize/2);
 		screenY = gameP.screenHeight / 2 - (gameP.finalTileSize/2);
 		recP = new Rectangle(16, 20, 26, 26);
+		recX = recP.x;
+		recY = recP.y;
 		setDefaultPlayer();
 		getPlayerImage();
 	}
@@ -103,6 +105,9 @@ public class Player extends Entity{
 	public void move() {
 		isCollison = false;
 		gameP.collisonC.checkCollison(this);
+		int itemIndex = gameP.collisonC.checkItem(this, true);
+		pickUpItems(itemIndex);
+		
 		if(isCollison == false) {
 			if(direction == "up") {
 				worldY -= speed;
@@ -115,6 +120,29 @@ public class Player extends Entity{
 			}
 			else if(direction == "right") {
 				worldX += speed;
+			}
+		}
+	}
+	
+	// deal with pickups
+	public void pickUpItems(int index) {
+		if(index != 999) {
+			if(gameP.itemC.items[index].name == "Key") {
+				gameP.playSound(1);
+				keyOwned++;
+				gameP.itemC.items[index] = null;
+			}
+			else if(gameP.itemC.items[index].name == "Door") {
+				if(keyOwned > 0) {
+					gameP.playSound(3);
+					keyOwned--;
+					gameP.itemC.items[index] = null;
+				}
+			}
+			else if(gameP.itemC.items[index].name == "Boots") {
+				gameP.playSound(2);
+				speed+=1;
+				gameP.itemC.items[index] = null;
 			}
 		}
 	}

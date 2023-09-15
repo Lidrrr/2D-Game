@@ -15,5 +15,6 @@ public class Entity {
 	public int entityNum = 1;
 	
 	public Rectangle recP;
+	public int recX, recY;
 	public boolean isCollison;
 }

@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import entity.Player;
 import item.Item;
+import item.ItemController;
 import tile.TileController;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -31,10 +32,12 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public TileController tileC = new TileController(this);
 	KeyController keyController = new KeyController();
+	Sound sound = new Sound();
 	Thread gameThread;
+	
 	public Player player = new Player(this, keyController);
 	public CollisonCheck collisonC = new CollisonCheck(this);
-	public Item items[] = new Item[10];
+	
 	public ItemController itemC = new ItemController(this);
 	
 	// FPS
@@ -50,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable{
 
 	public void setUpObj() {
 		itemC.createItems();
+		playMusic(0);
 	}
 	
 	// start the thread of the game
@@ -87,13 +91,33 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		Graphics2D g2 = (Graphics2D)g;
 		tileC.draw(g2);
-		for(int i = 0; i < items.length; i++) {
-			if(items[i] != null) {
-				items[i].draw(g2, this);
+		for(int i = 0; i < itemC.items.length; i++) {
+			if(itemC.items[i] != null) {
+				itemC.items[i].draw(g2, this);
 			}
 		}
 		
 		player.draw(g2);
 		g2.dispose();
 	}
+	
+	public void playMusic(int i) {
+		sound.setFile(i);
+		sound.play();
+		sound.loop();
+	}
+	
+	public void stopMusic() {
+		sound.stop();
+	}
+	
+	public void playSound(int i) {
+		sound.setFile(i);
+		sound.play();
+	}
+	
+	
+	
+	
+	
 }

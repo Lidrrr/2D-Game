@@ -56,6 +56,78 @@ public class CollisonCheck {
 		}
 	}
 	
+	// check collisions of entity and items
+	public int checkItem(Entity e, boolean ifPlayer) {
+		
+		int index = 999;
+		
+		for(int i = 0; i < gameP.itemC.items.length; i++) {
+			if(gameP.itemC.items[i] != null) {
+				e.recP.x += e.worldX;
+				e.recP.y += e.worldY;
+				gameP.itemC.items[i].recP.x += gameP.itemC.items[i].worldX;
+				gameP.itemC.items[i].recP.y += gameP.itemC.items[i].worldY;
+				
+				if(e.direction == "up") {
+					e.recP.y -= e.speed;
+					if(e.recP.intersects(gameP.itemC.items[i].recP)) {
+						if(gameP.itemC.items[i].collison == true) {
+							e.isCollison = true;
+						}
+						if(ifPlayer == true) {
+							index = i;
+						}
+					}
+				}
+				else if(e.direction == "down") {
+					e.recP.y += e.speed;
+					if(e.recP.intersects(gameP.itemC.items[i].recP)) {
+						if(gameP.itemC.items[i].collison == true) {
+							e.isCollison = true;
+						}
+						if(ifPlayer == true) {
+							index = i;
+						}
+					}
+				}
+				else if(e.direction == "left") {
+					e.recP.x -= e.speed;
+					if(e.recP.intersects(gameP.itemC.items[i].recP)) {
+						if(gameP.itemC.items[i].collison == true) {
+							e.isCollison = true;
+						}
+						if(ifPlayer == true) {
+							index = i;
+						}
+					}
+				}
+				else if(e.direction == "right") {
+					e.recP.x += e.speed;
+					if(e.recP.intersects(gameP.itemC.items[i].recP)) {
+						if(gameP.itemC.items[i].collison == true) {
+							e.isCollison = true;
+						}
+						if(ifPlayer == true) {
+							index = i;
+						}
+					}
+				}
+				e.recP.x = e.recX;
+				e.recP.y = e.recY;
+				gameP.itemC.items[i].recP.x = gameP.itemC.items[i].recX;
+				gameP.itemC.items[i].recP.y = gameP.itemC.items[i].recY;
+			}
+		}
+		
+		return index;
+	}
+	
+	public int setValues(int i, int index, Entity e) {
+		return index;
+	}
+	
+	
+	
 	
 	
 	
