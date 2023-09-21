@@ -17,6 +17,7 @@ public class GamePanel extends JPanel implements Runnable{
 	final int tileSize = 16; // 16 x 16
 	final int ratio = 3;
 	public final int finalTileSize = ratio * tileSize; // 48 x 48
+	public boolean gameFinished = false;
 	
 	// screen info.
 	public final int screenCol = 16;
@@ -33,6 +34,8 @@ public class GamePanel extends JPanel implements Runnable{
 	public TileController tileC = new TileController(this);
 	KeyController keyController = new KeyController();
 	Sound sound = new Sound();
+	Sound music = new Sound();
+	public UI ui =  new UI(this);
 	Thread gameThread;
 	
 	public Player player = new Player(this, keyController);
@@ -98,17 +101,18 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 		
 		player.draw(g2);
+		ui.draw(g2);
 		g2.dispose();
 	}
 	
 	public void playMusic(int i) {
-		sound.setFile(i);
-		sound.play();
-		sound.loop();
+		music.setFile(i);
+		music.play();
+		music.loop();
 	}
 	
 	public void stopMusic() {
-		sound.stop();
+		music.stop();
 	}
 	
 	public void playSound(int i) {

@@ -13,7 +13,7 @@ import main.KeyController;
 
 public class Player extends Entity{
 	public final int screenX, screenY;
-	int keyOwned = 0;
+	public int keyOwned = 0;
 	GamePanel gameP;
 	KeyController keyC;
 	
@@ -142,6 +142,12 @@ public class Player extends Entity{
 			else if(gameP.itemC.items[index].name == "Boots") {
 				gameP.playSound(2);
 				speed+=1;
+				gameP.itemC.items[index] = null;
+			}
+			else if(gameP.itemC.items[index].name == "Chest") {
+				gameP.gameFinished = true;
+				gameP.stopMusic();
+				gameP.playSound(4);
 				gameP.itemC.items[index] = null;
 			}
 		}
