@@ -17,7 +17,7 @@ public class UI {
 		this.gameP = gameP;
 		font_40 = new Font("Arial", Font.PLAIN, 40);
 		font_80 = new Font("Arial", Font.BOLD, 80);
-		Key key = new Key();
+		Key key = new Key(gameP);
 		image = key.image;
 	}
 	

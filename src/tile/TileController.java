@@ -1,6 +1,7 @@
 package tile;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +9,7 @@ import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 
+import main.ExtraTools;
 import main.GamePanel;
 
 public class TileController {
@@ -25,28 +27,24 @@ public class TileController {
 	}
 	
 	public void getTileImage() {
+		setUpTiles(0, "grass", false);
+		setUpTiles(1, "wall", true);
+		setUpTiles(2, "water", true);
+		setUpTiles(3, "earth", false);
+		setUpTiles(4, "tree", true);
+		setUpTiles(5, "sand", false);
+	}
+	public void setUpTiles(int index, String imageName, boolean collsion) {
+		ExtraTools eTools = new ExtraTools();
 		try {
-			tiles[0] = new Tile();
-			tiles[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png"));
-			tiles[1] = new Tile();
-			tiles[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
-			tiles[1].collison = true;
-			tiles[2] = new Tile();
-			tiles[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
-			tiles[2].collison = true;
-			tiles[3] = new Tile();
-			tiles[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png"));
-			tiles[4] = new Tile();
-			tiles[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
-			tiles[4].collison = true;
-			tiles[5] = new Tile();
-			tiles[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png"));
-			
-		}catch(IOException e) {
+			tiles[index] = new Tile();
+			tiles[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
+			tiles[index].image = eTools.scaIeImage(tiles[index].image, gameP.finalTileSize, gameP.finalTileSize);
+			tiles[index].collison = collsion;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
 	public void drawMap(String file) {
 		try {
 			InputStream input = getClass().getResourceAsStream(file);
@@ -94,7 +92,7 @@ public class TileController {
 			   worldX - gameP.finalTileSize < gameP.player.worldX + gameP.player.screenX	&&
 			   worldY + gameP.finalTileSize > gameP.player.worldY - gameP.player.screenY &&
 			   worldY - gameP.finalTileSize < gameP.player.worldY + gameP.player.screenY) {
-				g2.drawImage(tiles[tileNum].image, screenX, screenY, gameP.finalTileSize, gameP.finalTileSize, null);
+				g2.drawImage(tiles[tileNum].image, screenX, screenY, null);
 			}
 			
 			col++;

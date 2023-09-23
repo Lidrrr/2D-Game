@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import main.ExtraTools;
 import main.GamePanel;
 
 public class Item {
@@ -14,6 +15,7 @@ public class Item {
 	public Rectangle recP = new Rectangle(0,0,48,48);
 	public int recX = recP.x;
 	public int recY = recP.y;
+	ExtraTools eTools = new ExtraTools();
 	
 	public void draw(Graphics2D g2, GamePanel gameP) {
 		int screenX = worldX - gameP.player.worldX + gameP.player.screenX;

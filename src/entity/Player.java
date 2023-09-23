@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import main.ExtraTools;
 import main.GamePanel;
 import main.KeyController;
 
@@ -40,20 +41,28 @@ public class Player extends Entity{
 	
 	// read in player images
 	public void getPlayerImage() {
+		up1 = setUpPlayer("up1");
+		up2 = setUpPlayer("up2");
+		up3 = setUpPlayer("up3");
+		down1 = setUpPlayer("down1");
+		down2 = setUpPlayer("down2");
+		down3 = setUpPlayer("down3");
+		left1 = setUpPlayer("left1");
+		left2 = setUpPlayer("left2");
+		right1 = setUpPlayer("right1");
+		right2 = setUpPlayer("right2");
+	}
+	
+	public BufferedImage setUpPlayer(String imageString) {
+		ExtraTools eTools = new ExtraTools();
+		BufferedImage scaledImage = null;
 		try {
-			up1 = ImageIO.read(getClass().getResourceAsStream("/player/up1.png"));
-			up2 = ImageIO.read(getClass().getResourceAsStream("/player/up2.png"));
-			up3 = ImageIO.read(getClass().getResourceAsStream("/player/up3.png"));
-			down1 = ImageIO.read(getClass().getResourceAsStream("/player/down1.png"));
-			down2 = ImageIO.read(getClass().getResourceAsStream("/player/down2.png"));
-			down3 = ImageIO.read(getClass().getResourceAsStream("/player/down3.png"));
-			left1 = ImageIO.read(getClass().getResourceAsStream("/player/left1.png"));
-			left2 = ImageIO.read(getClass().getResourceAsStream("/player/left2.png"));
-			right1 = ImageIO.read(getClass().getResourceAsStream("/player/right1.png"));
-			right2 = ImageIO.read(getClass().getResourceAsStream("/player/right2.png"));
-		}catch(IOException e) {
+			scaledImage = ImageIO.read(getClass().getResourceAsStream("/player/" + imageString + ".png"));
+			scaledImage = eTools.scaIeImage(scaledImage, gameP.finalTileSize, gameP.finalTileSize);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return scaledImage;
 	}
 	
 	// update with the key pressed
@@ -199,7 +208,7 @@ public class Player extends Entity{
 			break;
 		}
 		
-		g2.drawImage(image, screenX, screenY, gameP.finalTileSize, gameP.finalTileSize, null);
+		g2.drawImage(image, screenX, screenY, null);
 	}
 	
 	
