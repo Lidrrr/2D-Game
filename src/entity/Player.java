@@ -80,31 +80,16 @@ public class Player extends Entity{
 		animate();
 	}
 	
-	// for animation logic
-	public void animate() {
-		if(entityCounter == 0) {
-			entityNum = 0;
-		}
-		if(entityCounter > 12) {
-			if(entityNum == 0) {
-				entityNum = 1;
-			}
-			else if(entityNum == 1) {
-				entityNum = 2;
-			}
-			else if(entityNum == 2) {
-				entityNum = 1;
-			}
-			entityCounter = 0;
-		}
-	}
-	
 	// movement logic with collision check
 	public void move() {
 		isCollison = false;
 		gameP.collisonC.checkCollison(this);
 		int itemIndex = gameP.collisonC.checkItem(this, true);
 		pickUpItems(itemIndex);
+		
+		// check NPC collision
+		int npcIndex = gameP.collisonC.checkEntity(this, gameP.itemC.npcs);
+		NPCInteraction(npcIndex);
 		
 		if(isCollison == false) {
 			if(direction == "up") {
@@ -119,6 +104,13 @@ public class Player extends Entity{
 			else if(direction == "right") {
 				worldX += speed;
 			}
+		}
+	}
+	
+	// deal with interactions with NPC
+	public void NPCInteraction(int index) {
+		if(index != 999) {
+			System.out.println("hiting an NPC");
 		}
 	}
 	

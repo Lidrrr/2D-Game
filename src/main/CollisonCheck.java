@@ -122,11 +122,90 @@ public class CollisonCheck {
 		return index;
 	}
 	
-	public int setValues(int i, int index, Entity e) {
+	public int checkEntity(Entity e, Entity[] targets) {
+
+		int index = 999;
+		
+		for(int i = 0; i < targets.length; i++) {
+			if(targets[i] != null) {
+				e.recP.x += e.worldX;
+				e.recP.y += e.worldY;
+				targets[i].recP.x += targets[i].worldX;
+				targets[i].recP.y += targets[i].worldY;
+				
+				if(e.direction == "up") {
+					e.recP.y -= e.speed;
+					if(e.recP.intersects(targets[i].recP)) {
+						e.isCollison = true;
+						index = i;
+					}
+				}
+				else if(e.direction == "down") {
+					e.recP.y += e.speed;
+					if(e.recP.intersects(targets[i].recP)) {
+						e.isCollison = true;
+						index = i;
+					}
+				}
+				else if(e.direction == "left") {
+					e.recP.x -= e.speed;
+					if(e.recP.intersects(targets[i].recP)) {
+						e.isCollison = true;
+						index = i;
+					}
+				}
+				else if(e.direction == "right") {
+					e.recP.x += e.speed;
+					if(e.recP.intersects(targets[i].recP)) {
+						e.isCollison = true;
+						index = i;
+					}
+				}
+				e.recP.x = e.recX;
+				e.recP.y = e.recY;
+				targets[i].recP.x = targets[i].recX;
+				targets[i].recP.y = targets[i].recY;
+			}
+		}
+		
 		return index;
 	}
 	
-	
+	public void NPCTouchPlayer(Entity e) {
+		e.recP.x += e.worldX;
+		e.recP.y += e.worldY;
+		gameP.player.recP.x += gameP.player.worldX;
+		gameP.player.recP.y += gameP.player.worldY;
+		
+		if(e.direction == "up") {
+			e.recP.y -= e.speed;
+			if(e.recP.intersects(gameP.player.recP)) {
+				e.isCollison = true;
+			}
+		}
+		else if(e.direction == "down") {
+			e.recP.y += e.speed;
+			if(e.recP.intersects(gameP.player.recP)) {
+				e.isCollison = true;
+			}
+		}
+		else if(e.direction == "left") {
+			e.recP.x -= e.speed;
+			if(e.recP.intersects(gameP.player.recP)) {
+				e.isCollison = true;
+			}
+		}
+		else if(e.direction == "right") {
+			e.recP.x += e.speed;
+			if(e.recP.intersects(gameP.player.recP)) {
+				e.isCollison = true;
+			}
+		}
+		e.recP.x = e.recX;
+		e.recP.y = e.recY;
+		gameP.player.recP.x = gameP.player.recX;
+		gameP.player.recP.y = gameP.player.recY;
+	}
 	
 	
 	

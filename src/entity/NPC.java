@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Random;
+
 import main.GamePanel;
 
 public class NPC extends Entity{
@@ -24,4 +26,43 @@ public class NPC extends Entity{
 		right1 = setUpImages("/npc/right1");
 		right2 = setUpImages("/npc/right2");
 	}
+	
+	// NPC behavior
+	public void update() {
+		
+		moveCounter++;
+		
+		if(moveCounter == 100) {
+			Random random = new Random();
+			int i = random.nextInt(100);
+		
+			if(i<= 25) {
+				direction = "up";
+			}
+			else if (i > 25 && i <= 50) {
+				direction = "down";
+			}
+			else if(i > 50 && i <= 75){
+				direction = "left";
+			}
+			else {
+				direction = "right";
+			}
+			
+			moveCounter = 0;
+		}
+		move();
+		entityCounter++;
+		animate();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -20,6 +20,9 @@ public class Entity {
 	public int entityCounter = 0;
 	public int entityNum = 1;
 	
+	// for npc move
+	public int moveCounter = 0;
+	
 	public Rectangle recP = new Rectangle(0, 0, 48, 48);
 	public int recX, recY;
 	public boolean isCollison;
@@ -95,4 +98,56 @@ public class Entity {
 			g2.drawImage(image, screenX, screenY, gameP.finalTileSize, gameP.finalTileSize, null);
 		}
 	}
+	// for animation logic
+	public void animate() {
+		if(entityCounter == 0) {
+			entityNum = 0;
+		}
+		if(entityCounter > 12) {
+			if(entityNum == 0) {
+				entityNum = 1;
+			}
+			else if(entityNum == 1) {
+				entityNum = 2;
+			}
+			else if(entityNum == 2) {
+				entityNum = 1;
+			}
+			entityCounter = 0;
+		}
+	}
+	
+	public void update() {}
+	
+	public void move() {
+		
+		isCollison = false;
+		gameP.collisonC.checkCollison(this);
+		gameP.collisonC.checkItem(this, isCollison);
+		gameP.collisonC.NPCTouchPlayer(this);
+		
+		if(isCollison == false) {
+			if(direction == "up") {
+				worldY -= speed;
+			}
+			else if(direction == "down") {
+				worldY += speed;
+			}
+			else if(direction == "left") {
+				worldX -= speed;
+			}
+			else if(direction == "right") {
+				worldX += speed;
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

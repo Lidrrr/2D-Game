@@ -96,6 +96,10 @@ public class GamePanel extends JPanel implements Runnable{
 	public void update() {
 		if(gameState == playing) {
 			player.update();
+			
+			for(int i = 0; i < itemC.npcs.length; i++) {
+				if(itemC.npcs[i] != null) {itemC.npcs[i].update();}
+			}
 		}
 		else if(gameState == pause){
 			
