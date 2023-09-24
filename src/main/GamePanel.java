@@ -19,6 +19,11 @@ public class GamePanel extends JPanel implements Runnable{
 	public final int finalTileSize = ratio * tileSize; // 48 x 48
 	public boolean gameFinished = false;
 	
+	// game state
+	public int gameState;
+	public final int playing = 1;
+	public final int pause = 2;
+	
 	// screen info.
 	public final int screenCol = 16;
 	public final int screenRow = 12;
@@ -32,7 +37,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public final int worldHeight = worldRow * finalTileSize;
 	
 	public TileController tileC = new TileController(this);
-	KeyController keyController = new KeyController();
+	KeyController keyController = new KeyController(this);
 	Sound sound = new Sound();
 	Sound music = new Sound();
 	public UI ui =  new UI(this);
@@ -54,9 +59,12 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setFocusable(true);
 	}
 
-	public void setUpObj() {
+	public void setUpGame() {
 		itemC.createItems();
+		itemC.createNPCs();
 		playMusic(0);
+		stopMusic();
+		gameState = playing;
 	}
 	
 	// start the thread of the game
@@ -86,20 +94,35 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	public void update() {
-		player.update();
+		if(gameState == playing) {
+			player.update();
+		}
+		else if(gameState == pause){
+			
+		}
 	}
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
 		Graphics2D g2 = (Graphics2D)g;
+		
+		// tiles
 		tileC.draw(g2);
+		
+		// items
 		for(int i = 0; i < itemC.items.length; i++) {
 			if(itemC.items[i] != null) {
 				itemC.items[i].draw(g2, this);
 			}
 		}
 		
+		// NPCs
+		for(int i = 0; i < itemC.npcs.length; i++) {
+			if(itemC.npcs[i] != null) {
+				itemC.npcs[i].draw(g2);
+			}
+		}
 		player.draw(g2);
 		ui.draw(g2);
 		g2.dispose();

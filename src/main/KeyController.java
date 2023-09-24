@@ -4,8 +4,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyController implements KeyListener{
+	GamePanel gameP;
 	public boolean upPress, downPress, leftPress, rightPress;
 
+	public KeyController(GamePanel gameP) {
+		this.gameP = gameP;
+	}
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -29,6 +34,14 @@ public class KeyController implements KeyListener{
 		}
 		if(key == KeyEvent.VK_D) {
 			rightPress = true;
+		}
+		if(key == KeyEvent.VK_P) {
+			if(gameP.gameState == gameP.playing) {
+				gameP.gameState = gameP.pause;
+			}
+			else if(gameP.gameState == gameP.pause) {
+				gameP.gameState = gameP.playing;
+			}
 		}
 	}
 

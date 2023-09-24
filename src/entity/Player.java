@@ -14,12 +14,11 @@ import main.KeyController;
 
 public class Player extends Entity{
 	public final int screenX, screenY;
-	public int keyOwned = 0;
-	GamePanel gameP;
 	KeyController keyC;
 	
 	public Player(GamePanel gameP, KeyController keyC) {
-		this.gameP = gameP;
+		
+		super(gameP);
 		this.keyC = keyC;
 		
 		// fix player at center
@@ -41,29 +40,19 @@ public class Player extends Entity{
 	
 	// read in player images
 	public void getPlayerImage() {
-		up1 = setUpPlayer("up1");
-		up2 = setUpPlayer("up2");
-		up3 = setUpPlayer("up3");
-		down1 = setUpPlayer("down1");
-		down2 = setUpPlayer("down2");
-		down3 = setUpPlayer("down3");
-		left1 = setUpPlayer("left1");
-		left2 = setUpPlayer("left2");
-		right1 = setUpPlayer("right1");
-		right2 = setUpPlayer("right2");
+		up1 = setUpImages("/player/up1");
+		up2 = setUpImages("/player/up2");
+		up3 = setUpImages("/player/up3");
+		down1 = setUpImages("/player/down1");
+		down2 = setUpImages("/player/down2");
+		down3 = setUpImages("/player/down3");
+		left1 = setUpImages("/player/left1");
+		left2 = setUpImages("/player/left2");
+		right1 = setUpImages("/player/right1");
+		right2 = setUpImages("/player/right2");
 	}
 	
-	public BufferedImage setUpPlayer(String imageString) {
-		ExtraTools eTools = new ExtraTools();
-		BufferedImage scaledImage = null;
-		try {
-			scaledImage = ImageIO.read(getClass().getResourceAsStream("/player/" + imageString + ".png"));
-			scaledImage = eTools.scaIeImage(scaledImage, gameP.finalTileSize, gameP.finalTileSize);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return scaledImage;
-	}
+	
 	
 	// update with the key pressed
 	public void update() {
@@ -135,31 +124,7 @@ public class Player extends Entity{
 	
 	// deal with pickups
 	public void pickUpItems(int index) {
-		if(index != 999) {
-			if(gameP.itemC.items[index].name == "Key") {
-				gameP.playSound(1);
-				keyOwned++;
-				gameP.itemC.items[index] = null;
-			}
-			else if(gameP.itemC.items[index].name == "Door") {
-				if(keyOwned > 0) {
-					gameP.playSound(3);
-					keyOwned--;
-					gameP.itemC.items[index] = null;
-				}
-			}
-			else if(gameP.itemC.items[index].name == "Boots") {
-				gameP.playSound(2);
-				speed+=1;
-				gameP.itemC.items[index] = null;
-			}
-			else if(gameP.itemC.items[index].name == "Chest") {
-				gameP.gameFinished = true;
-				gameP.stopMusic();
-				gameP.playSound(4);
-				gameP.itemC.items[index] = null;
-			}
-		}
+		
 	}
 	
 	// draw 'animated' player with according directions
