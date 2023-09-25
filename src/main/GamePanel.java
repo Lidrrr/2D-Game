@@ -23,6 +23,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public int gameState;
 	public final int playing = 1;
 	public final int pause = 2;
+	public final int dialogue = 3;
 	
 	// screen info.
 	public final int screenCol = 16;
@@ -37,7 +38,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public final int worldHeight = worldRow * finalTileSize;
 	
 	public TileController tileC = new TileController(this);
-	KeyController keyController = new KeyController(this);
+	public KeyController keyController = new KeyController(this);
 	Sound sound = new Sound();
 	Sound music = new Sound();
 	public UI ui =  new UI(this);

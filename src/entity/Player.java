@@ -109,9 +109,13 @@ public class Player extends Entity{
 	
 	// deal with interactions with NPC
 	public void NPCInteraction(int index) {
-		if(index != 999) {
-			System.out.println("hiting an NPC");
+		if(recP.intersects(gameP.itemC.npcs[0].recP)) {
+			if(gameP.keyController.spacePress) {
+				gameP.gameState = gameP.dialogue;
+				gameP.itemC.npcs[0].setDialogue();
+			}
 		}
+		
 	}
 	
 	// deal with pickups

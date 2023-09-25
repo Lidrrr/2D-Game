@@ -1,11 +1,12 @@
 package main;
 
 import java.awt.event.KeyEvent;
+
 import java.awt.event.KeyListener;
 
 public class KeyController implements KeyListener{
 	GamePanel gameP;
-	public boolean upPress, downPress, leftPress, rightPress;
+	public boolean upPress, downPress, leftPress, rightPress, spacePress;
 
 	public KeyController(GamePanel gameP) {
 		this.gameP = gameP;
@@ -23,23 +24,39 @@ public class KeyController implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		
-		if(key == KeyEvent.VK_W) {
-			upPress = true;
-		}
-		if(key == KeyEvent.VK_A) {
-			leftPress = true;
-		}
-		if(key == KeyEvent.VK_S) {
-			downPress = true;
-		}
-		if(key == KeyEvent.VK_D) {
-			rightPress = true;
-		}
-		if(key == KeyEvent.VK_P) {
-			if(gameP.gameState == gameP.playing) {
+		// playing state
+		if(gameP.gameState == gameP.playing) {
+			if(key == KeyEvent.VK_W) {
+				upPress = true;
+			}
+			if(key == KeyEvent.VK_A) {
+				leftPress = true;
+			}
+			if(key == KeyEvent.VK_S) {
+				downPress = true;
+			}
+			if(key == KeyEvent.VK_D) {
+				rightPress = true;
+			}
+			if(key == KeyEvent.VK_P) {
 				gameP.gameState = gameP.pause;
 			}
-			else if(gameP.gameState == gameP.pause) {
+			if(key == KeyEvent.VK_SPACE) {
+				spacePress = true;
+			}
+		}
+		
+		// pause state
+		else if(gameP.gameState == gameP.pause) {
+			gameP.gameState = gameP.playing;
+		}
+		// dialogue state
+		else if(gameP.gameState == gameP.dialogue) {
+			if(key == KeyEvent.VK_SPACE) {
+				if(gameP.itemC.npcs[0].dialogues[gameP.itemC.npcs[0].dialogueIndex + 1] != null) {
+					gameP.itemC.npcs[0].dialogueIndex++;
+				}
+				
 				gameP.gameState = gameP.playing;
 			}
 		}
@@ -62,7 +79,9 @@ public class KeyController implements KeyListener{
 		if(key == KeyEvent.VK_D) {
 			rightPress = false;
 		}
-		
+		if(key == KeyEvent.VK_SPACE) {
+			spacePress = false;
+		}
 	}
 
 }

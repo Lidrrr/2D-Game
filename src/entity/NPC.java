@@ -5,6 +5,7 @@ import java.util.Random;
 import main.GamePanel;
 
 public class NPC extends Entity{
+	
 	public NPC(GamePanel gameP) {
 		super(gameP);
 		
@@ -56,7 +57,28 @@ public class NPC extends Entity{
 		animate();
 	}
 	
-	
+	// set dialogues
+	public void setDialogue() {
+		dialogues[0] = "Explore the surroundings, \ncomplete quests, and grow stronger.";
+		dialogues[1] = "That's the path of a true adventurer.";
+		dialogues[2] = "Remember my words, \nevery choice you make shapes your destiny. ";
+		dialogues[3] = "Make wise decisions, \nand you'll become a legendary hero!";
+		
+		switch (gameP.player.direction){
+		case "up":
+			direction = "down";
+			break;
+		case "down":
+			direction = "up";
+			break;
+		case "left":
+			direction = "right";
+			break;
+		case "right":
+			direction = "left";
+			break;
+		}
+	}
 	
 	
 	
