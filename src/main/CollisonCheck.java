@@ -137,6 +137,7 @@ public class CollisonCheck {
 					e.recP.y -= e.speed;
 					if(e.recP.intersects(targets[i].recP)) {
 						e.isCollison = true;
+						gameP.ui.spaceButton.isSpace = true;
 						index = i;
 					}
 				}
@@ -144,6 +145,7 @@ public class CollisonCheck {
 					e.recP.y += e.speed;
 					if(e.recP.intersects(targets[i].recP)) {
 						e.isCollison = true;
+						gameP.ui.spaceButton.isSpace = true;
 						index = i;
 					}
 				}
@@ -151,6 +153,7 @@ public class CollisonCheck {
 					e.recP.x -= e.speed;
 					if(e.recP.intersects(targets[i].recP)) {
 						e.isCollison = true;
+						gameP.ui.spaceButton.isSpace = true;
 						index = i;
 					}
 				}
@@ -158,6 +161,7 @@ public class CollisonCheck {
 					e.recP.x += e.speed;
 					if(e.recP.intersects(targets[i].recP)) {
 						e.isCollison = true;
+						gameP.ui.spaceButton.isSpace = true;
 						index = i;
 					}
 				}

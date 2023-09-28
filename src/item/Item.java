@@ -8,7 +8,7 @@ import main.ExtraTools;
 import main.GamePanel;
 
 public class Item {
-	public BufferedImage image;
+	public BufferedImage image, heart_full, heart_half, heart_blank;
 	public String name;
 	public boolean collison = false;
 	public int worldX, worldY;
@@ -21,7 +21,7 @@ public class Item {
 		int screenX = worldX - gameP.player.worldX + gameP.player.screenX;
 		int screenY = worldY - gameP.player.worldY + gameP.player.screenY;
 		
-		// not draw obj outside the screen
+		// not draw item outside the screen
 		if(worldX + gameP.finalTileSize > gameP.player.worldX - gameP.player.screenX &&
 		   worldX - gameP.finalTileSize < gameP.player.worldX + gameP.player.screenX	&&
 		   worldY + gameP.finalTileSize > gameP.player.worldY - gameP.player.screenY &&

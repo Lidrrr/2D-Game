@@ -1,5 +1,7 @@
 package item;
 
+import button.Button;
+import button.SpaceButton;
 import entity.Entity;
 import entity.NPC;
 import main.GamePanel;
@@ -8,6 +10,8 @@ public class ItemController {
 	GamePanel gameP;
 	public Item items[] = new Item[10];
 	public Entity npcs[] = new Entity[10];
+	//public Button buttons[] = new Button[10];
+	
 	
 	public ItemController(GamePanel gameP) {
 		this.gameP = gameP;
@@ -21,5 +25,10 @@ public class ItemController {
 		npcs[0] = new NPC(gameP);
 		npcs[0].worldX = gameP.finalTileSize*21;
 		npcs[0].worldY = gameP.finalTileSize*21;
+	}
+	
+	public void createbuttons() {
+		//buttons[0] = new SpaceButton(gameP);
+		//buttons[0].worldX = gameP
 	}
 }

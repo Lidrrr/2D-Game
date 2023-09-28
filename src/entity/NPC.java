@@ -12,6 +12,7 @@ public class NPC extends Entity{
 		direction = "down";
 		speed = 1;
 		getNPCImage();
+		setDialogue();
 	}
 	
 	// read in NPC images
@@ -80,7 +81,11 @@ public class NPC extends Entity{
 		}
 	}
 	
-	
+	// set dialogues to be visible to ui class
+	public void transfer() {
+		gameP.ui.diaString = dialogues[dialogueIndex];
+		//dialogueIndex++;
+	}
 	
 	
 	

@@ -24,8 +24,11 @@ public class Entity {
 	public int entityCounter = 0;
 	public int entityNum = 1;
 	
-	// for npc move
+	// for NPC move
 	public int moveCounter = 0;
+	
+	// life
+	public int maxLife, currentLife;
 	
 	public Rectangle recP = new Rectangle(0, 0, 48, 48);
 	public int recX, recY;
@@ -52,7 +55,7 @@ public class Entity {
 		int screenX = worldX - gameP.player.worldX + gameP.player.screenX;
 		int screenY = worldY - gameP.player.worldY + gameP.player.screenY;
 		
-		// not draw obj outside the screen
+		// not draw item outside the screen
 		if(worldX + gameP.finalTileSize > gameP.player.worldX - gameP.player.screenX &&
 		   worldX - gameP.finalTileSize < gameP.player.worldX + gameP.player.screenX	&&
 		   worldY + gameP.finalTileSize > gameP.player.worldY - gameP.player.screenY &&
@@ -122,7 +125,7 @@ public class Entity {
 	}
 	
 	public void update() {}
-	public void setDialogue() {}
+	public void transfer() {}
 	public void move() {
 		
 		isCollison = false;

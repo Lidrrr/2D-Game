@@ -36,6 +36,8 @@ public class Player extends Entity{
 		worldY = 21 * gameP.finalTileSize;
 		speed = 4;
 		direction = "down";
+		maxLife = 6;
+		currentLife = maxLife;
 	}
 	
 	// read in player images
@@ -91,6 +93,11 @@ public class Player extends Entity{
 		int npcIndex = gameP.collisonC.checkEntity(this, gameP.itemC.npcs);
 		NPCInteraction(npcIndex);
 		
+		// check damage
+		gameP.eHandler.checkEvent();
+		
+		//gameP.keyController.spacePress = false;
+		
 		if(isCollison == false) {
 			if(direction == "up") {
 				worldY -= speed;
@@ -109,10 +116,10 @@ public class Player extends Entity{
 	
 	// deal with interactions with NPC
 	public void NPCInteraction(int index) {
-		if(recP.intersects(gameP.itemC.npcs[0].recP)) {
+		if(index != 999) {
 			if(gameP.keyController.spacePress) {
 				gameP.gameState = gameP.dialogue;
-				gameP.itemC.npcs[0].setDialogue();
+				gameP.itemC.npcs[0].transfer();
 			}
 		}
 		

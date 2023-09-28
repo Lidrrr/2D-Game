@@ -21,6 +21,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	// game state
 	public int gameState;
+	public final int menu = 0;
 	public final int playing = 1;
 	public final int pause = 2;
 	public final int dialogue = 3;
@@ -46,7 +47,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public Player player = new Player(this, keyController);
 	public CollisonCheck collisonC = new CollisonCheck(this);
-	
+	public EventHandler eHandler = new EventHandler(this);
 	public ItemController itemC = new ItemController(this);
 	
 	// FPS
@@ -65,7 +66,7 @@ public class GamePanel extends JPanel implements Runnable{
 		itemC.createNPCs();
 		playMusic(0);
 		stopMusic();
-		gameState = playing;
+		gameState = menu;
 	}
 	
 	// start the thread of the game
@@ -112,25 +113,31 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		Graphics2D g2 = (Graphics2D)g;
 		
-		// tiles
-		tileC.draw(g2);
-		
-		// items
-		for(int i = 0; i < itemC.items.length; i++) {
-			if(itemC.items[i] != null) {
-				itemC.items[i].draw(g2, this);
+		if(gameState == menu) {
+			ui.draw(g2);
+		}
+		else {
+			// tiles
+			tileC.draw(g2);
+			
+			// items
+			for(int i = 0; i < itemC.items.length; i++) {
+				if(itemC.items[i] != null) {
+					itemC.items[i].draw(g2, this);
+				}
 			}
+			
+			// NPCs
+			for(int i = 0; i < itemC.npcs.length; i++) {
+				if(itemC.npcs[i] != null) {
+					itemC.npcs[i].draw(g2);
+				}
+			}
+			player.draw(g2);
+			ui.draw(g2);
+			g2.dispose();
 		}
 		
-		// NPCs
-		for(int i = 0; i < itemC.npcs.length; i++) {
-			if(itemC.npcs[i] != null) {
-				itemC.npcs[i].draw(g2);
-			}
-		}
-		player.draw(g2);
-		ui.draw(g2);
-		g2.dispose();
 	}
 	
 	public void playMusic(int i) {

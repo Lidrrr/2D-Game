@@ -4,6 +4,8 @@ import java.awt.event.KeyEvent;
 
 import java.awt.event.KeyListener;
 
+import javax.print.attribute.standard.Media;
+
 public class KeyController implements KeyListener{
 	GamePanel gameP;
 	public boolean upPress, downPress, leftPress, rightPress, spacePress;
@@ -23,6 +25,29 @@ public class KeyController implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
+		// menu state
+		if(gameP.gameState == gameP.menu) {
+			if(key == KeyEvent.VK_W) {
+				gameP.ui.commandNum--;
+				if(gameP.ui.commandNum < 0) {
+					gameP.ui.commandNum = 2;
+				}
+			}
+			if(key == KeyEvent.VK_S) {
+				gameP.ui.commandNum++;
+				if(gameP.ui.commandNum > 2) {
+					gameP.ui.commandNum = 0;
+				}
+			}
+			if(key == KeyEvent.VK_ENTER) {
+				if(gameP.ui.commandNum == 0) {
+					gameP.gameState = gameP.playing;
+				}
+				else if(gameP.ui.commandNum == 2) {
+					System.exit(0);;
+				}
+			}
+		}
 		
 		// playing state
 		if(gameP.gameState == gameP.playing) {
