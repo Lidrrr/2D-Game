@@ -70,46 +70,26 @@ public class CollisonCheck {
 				
 				if(e.direction == "up") {
 					e.recP.y -= e.speed;
-					if(e.recP.intersects(gameP.itemC.items[i].recP)) {
-						if(gameP.itemC.items[i].collison == true) {
-							e.isCollison = true;
-						}
-						if(ifPlayer == true) {
-							index = i;
-						}
-					}
+					
 				}
 				else if(e.direction == "down") {
 					e.recP.y += e.speed;
-					if(e.recP.intersects(gameP.itemC.items[i].recP)) {
-						if(gameP.itemC.items[i].collison == true) {
-							e.isCollison = true;
-						}
-						if(ifPlayer == true) {
-							index = i;
-						}
-					}
+					
 				}
 				else if(e.direction == "left") {
 					e.recP.x -= e.speed;
-					if(e.recP.intersects(gameP.itemC.items[i].recP)) {
-						if(gameP.itemC.items[i].collison == true) {
-							e.isCollison = true;
-						}
-						if(ifPlayer == true) {
-							index = i;
-						}
-					}
+					
 				}
 				else if(e.direction == "right") {
 					e.recP.x += e.speed;
-					if(e.recP.intersects(gameP.itemC.items[i].recP)) {
-						if(gameP.itemC.items[i].collison == true) {
-							e.isCollison = true;
-						}
-						if(ifPlayer == true) {
-							index = i;
-						}
+					
+				}
+				if(e.recP.intersects(gameP.itemC.items[i].recP)) {
+					if(gameP.itemC.items[i].collison == true) {
+						e.isCollison = true;
+					}
+					if(ifPlayer == true) {
+						index = i;
 					}
 				}
 				e.recP.x = e.recX;
@@ -135,35 +115,26 @@ public class CollisonCheck {
 				
 				if(e.direction == "up") {
 					e.recP.y -= e.speed;
-					if(e.recP.intersects(targets[i].recP)) {
-						e.isCollison = true;
-						gameP.ui.spaceButton.isSpace = true;
-						index = i;
-					}
+					
 				}
 				else if(e.direction == "down") {
 					e.recP.y += e.speed;
-					if(e.recP.intersects(targets[i].recP)) {
-						e.isCollison = true;
-						gameP.ui.spaceButton.isSpace = true;
-						index = i;
-					}
+					
 				}
 				else if(e.direction == "left") {
 					e.recP.x -= e.speed;
-					if(e.recP.intersects(targets[i].recP)) {
-						e.isCollison = true;
-						gameP.ui.spaceButton.isSpace = true;
-						index = i;
-					}
 				}
 				else if(e.direction == "right") {
 					e.recP.x += e.speed;
-					if(e.recP.intersects(targets[i].recP)) {
+					
+				}
+				if(e.recP.intersects(targets[i].recP)) {
+					if(targets[i] != e) {
 						e.isCollison = true;
-						gameP.ui.spaceButton.isSpace = true;
+						if(targets[i].name == "npc" && e.name == "player")gameP.ui.spaceButton.isSpace = true;
 						index = i;
 					}
+					
 				}
 				e.recP.x = e.recX;
 				e.recP.y = e.recY;

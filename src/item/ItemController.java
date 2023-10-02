@@ -1,15 +1,15 @@
 package item;
 
-import button.Button;
-import button.SpaceButton;
 import entity.Entity;
 import entity.NPC;
 import main.GamePanel;
+import monster.Slime;
 
 public class ItemController {
 	GamePanel gameP;
-	public Item items[] = new Item[10];
+	public Entity items[] = new Entity[10];
 	public Entity npcs[] = new Entity[10];
+	public Entity monsters[] = new Entity[20];
 	//public Button buttons[] = new Button[10];
 	
 	
@@ -18,17 +18,20 @@ public class ItemController {
 	}
 	
 	public void createItems() {
-		
 	}
 	
 	public void createNPCs() {
 		npcs[0] = new NPC(gameP);
-		npcs[0].worldX = gameP.finalTileSize*21;
-		npcs[0].worldY = gameP.finalTileSize*21;
+		npcs[0].worldX = gameP.finalTileSize*9;
+		npcs[0].worldY = gameP.finalTileSize*10;
+		
+		
 	}
 	
-	public void createbuttons() {
-		//buttons[0] = new SpaceButton(gameP);
-		//buttons[0].worldX = gameP
+	public void createMonsters() {
+		monsters[0] = new Slime(gameP);
+		monsters[0].worldX = gameP.finalTileSize*10;
+		monsters[0].worldY = gameP.finalTileSize*10;
+		
 	}
 }

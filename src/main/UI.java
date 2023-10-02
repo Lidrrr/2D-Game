@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import button.SpaceButton;
+import entity.Entity;
 import item.Heart;
-import item.Item;
 import item.Key;
 
 public class UI {
@@ -36,7 +36,7 @@ public class UI {
 		spaceButton = new SpaceButton(gameP);
 		
 		// heart images
-		Item heartItem = new Heart(gameP);
+		Entity heartItem = new Heart(gameP);
 		heart_full = heartItem.heart_full;
 		heart_half = heartItem.heart_half;
 		heart_blank = heartItem.heart_blank;

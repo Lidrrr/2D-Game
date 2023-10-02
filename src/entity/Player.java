@@ -20,11 +20,11 @@ public class Player extends Entity{
 		
 		super(gameP);
 		this.keyC = keyC;
-		
+		name = "player";
 		// fix player at center
 		screenX = gameP.screenWidth / 2 - (gameP.finalTileSize/2);
 		screenY = gameP.screenHeight / 2 - (gameP.finalTileSize/2);
-		recP = new Rectangle(16, 20, 26, 26);
+		recP = new Rectangle(16, 16, 16, 16);
 		recX = recP.x;
 		recY = recP.y;
 		setDefaultPlayer();
@@ -35,7 +35,7 @@ public class Player extends Entity{
 		worldX = 23 * gameP.finalTileSize;
 		worldY = 21 * gameP.finalTileSize;
 		speed = 4;
-		direction = "down";
+		direction = "static";
 		maxLife = 6;
 		currentLife = maxLife;
 	}
@@ -93,6 +93,10 @@ public class Player extends Entity{
 		int npcIndex = gameP.collisonC.checkEntity(this, gameP.itemC.npcs);
 		NPCInteraction(npcIndex);
 		
+		// check monster collision
+		int monsterIndex = gameP.collisonC.checkEntity(this, gameP.itemC.monsters);
+		
+		
 		// check damage
 		gameP.eHandler.checkEvent();
 		
@@ -130,54 +134,7 @@ public class Player extends Entity{
 		
 	}
 	
-	// draw 'animated' player with according directions
-	public void draw(Graphics2D g2) {
-		BufferedImage image = null;
-		switch(direction) {
-		case "up":
-			if(entityNum == 0) {
-				image = up1;
-			}
-			else if(entityNum == 1) {
-				image = up2;
-			}
-			else if(entityNum == 2) {
-				image = up3;
-			}
-			break;
-		case "down":
-			if(entityNum == 0) {
-				image = down1;
-			}
-			else if(entityNum == 1) {
-				image = down2;
-			}
-			else if(entityNum == 2) {
-				image = down3;
-			}
-			break;
-		case "left":
-			if(entityNum == 0 || entityNum == 2) {
-				image = left1;
-			}
-			else if(entityNum == 1) {
-				image = left2;
-			}
-			
-			break;
-		case "right":
-			if(entityNum == 0 || entityNum == 2) {
-				image = right1;
-			}
-			else if(entityNum == 1) {
-				image = right2;
-			}
-			
-			break;
-		}
-		
-		g2.drawImage(image, screenX, screenY, null);
-	}
+	
 	
 	
 	

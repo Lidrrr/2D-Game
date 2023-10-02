@@ -8,7 +8,7 @@ public class NPC extends Entity{
 	
 	public NPC(GamePanel gameP) {
 		super(gameP);
-		
+		name = "npc";
 		direction = "down";
 		speed = 1;
 		getNPCImage();

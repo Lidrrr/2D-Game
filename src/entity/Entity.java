@@ -14,7 +14,7 @@ public class Entity {
 	public int worldX, worldY, speed;
 	GamePanel gameP;
 	public BufferedImage up1, up2, up3, down1, down2, down3, left1, left2, left3, right1, right2, right3;
-	public String direction;
+	public String direction = "static";
 	
 	// dialogues
 	public int dialogueIndex = 0;
@@ -26,6 +26,11 @@ public class Entity {
 	
 	// for NPC move
 	public int moveCounter = 0;
+	
+	// for items
+	public BufferedImage image, heart_full, heart_half, heart_blank;
+	public String name;
+	public boolean collison = false;
 	
 	// life
 	public int maxLife, currentLife;
@@ -62,24 +67,18 @@ public class Entity {
 		   worldY - gameP.finalTileSize < gameP.player.worldY + gameP.player.screenY) {
 			switch(direction) {
 			case "up":
-				if(entityNum == 0) {
-					image = up1;
-				}
-				else if(entityNum == 1) {
+				if(entityNum == 0 || entityNum == 2) {
 					image = up2;
 				}
-				else if(entityNum == 2) {
+				else if(entityNum == 1) {
 					image = up3;
 				}
 				break;
 			case "down":
-				if(entityNum == 0) {
-					image = down1;
-				}
-				else if(entityNum == 1) {
+				if(entityNum == 0 || entityNum == 2) {
 					image = down2;
 				}
-				else if(entityNum == 2) {
+				else if(entityNum == 1) {
 					image = down3;
 				}
 				break;
@@ -100,6 +99,9 @@ public class Entity {
 					image = right2;
 				}
 				
+				break;
+			case "static":
+				image = down1;
 				break;
 			}
 			g2.drawImage(image, screenX, screenY, gameP.finalTileSize, gameP.finalTileSize, null);
@@ -131,6 +133,8 @@ public class Entity {
 		isCollison = false;
 		gameP.collisonC.checkCollison(this);
 		gameP.collisonC.checkItem(this, isCollison);
+		gameP.collisonC.checkEntity(this, gameP.itemC.npcs);
+		gameP.collisonC.checkEntity(this, gameP.itemC.monsters);
 		gameP.collisonC.NPCTouchPlayer(this);
 		
 		if(isCollison == false) {

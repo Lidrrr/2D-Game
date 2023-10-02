@@ -5,11 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.JPanel;
 
+import entity.Entity;
 import entity.Player;
-import item.Item;
 import item.ItemController;
 import tile.TileController;
 
@@ -50,6 +53,8 @@ public class GamePanel extends JPanel implements Runnable{
 	public EventHandler eHandler = new EventHandler(this);
 	public ItemController itemC = new ItemController(this);
 	
+	ArrayList<Entity> entities = new ArrayList<Entity>();
+	
 	// FPS
 	int FPS = 60;
 	
@@ -64,6 +69,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public void setUpGame() {
 		itemC.createItems();
 		itemC.createNPCs();
+		itemC.createMonsters();
 		playMusic(0);
 		stopMusic();
 		gameState = menu;
@@ -102,6 +108,10 @@ public class GamePanel extends JPanel implements Runnable{
 			for(int i = 0; i < itemC.npcs.length; i++) {
 				if(itemC.npcs[i] != null) {itemC.npcs[i].update();}
 			}
+			
+			for(int i = 0; i < itemC.monsters.length; i++) {
+				if(itemC.monsters[i] != null) {itemC.monsters[i].update();}
+			}
 		}
 		else if(gameState == pause){
 			
@@ -120,22 +130,47 @@ public class GamePanel extends JPanel implements Runnable{
 			// tiles
 			tileC.draw(g2);
 			
-			// items
-			for(int i = 0; i < itemC.items.length; i++) {
+			// add entities
+			entities.add(player);
+			for(int i = 0;i < itemC.npcs.length; i++) {
+				if(itemC.npcs[i] != null) {
+					entities.add(itemC.npcs[i]);
+				}
+			}
+			for(int i = 0;i < itemC.items.length; i++) {
 				if(itemC.items[i] != null) {
-					itemC.items[i].draw(g2, this);
+					entities.add(itemC.items[i]);
+					
 				}
 			}
 			
-			// NPCs
-			for(int i = 0; i < itemC.npcs.length; i++) {
-				if(itemC.npcs[i] != null) {
-					itemC.npcs[i].draw(g2);
+			for(int i = 0;i < itemC.monsters.length; i++) {
+				if(itemC.monsters[i] != null) {
+					entities.add(itemC.monsters[i]);
+					
 				}
 			}
-			player.draw(g2);
+			
+			Collections.sort(entities, new Comparator<Entity>() {
+
+				@Override
+				public int compare(Entity o1, Entity o2) {
+					int result = Integer.compare(o1.worldY, o2.worldY);
+					return result;
+				}
+			});
+			
+			// draw entities
+			for(int i = 0; i < entities.size(); i++) {
+				entities.get(i).draw(g2);
+			}
+			// clear entities
+			for(int i = 0; i < entities.size(); i++) {
+				entities.remove(i);
+			}
+			
 			ui.draw(g2);
-			g2.dispose();
+			//g2.dispose();
 		}
 		
 	}
