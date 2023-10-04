@@ -22,6 +22,8 @@ public class UI {
 	BufferedImage heart_full, heart_half, heart_blank;
 	int commandNum = 0;
 	public SpaceButton spaceButton;
+	int spaceNum = 0;
+	int spaceCount = 0;
 	public String diaString;
 	
 	public UI(GamePanel gameP) {
@@ -67,7 +69,12 @@ public class UI {
 	private void drawButton() {
 		if(spaceButton.isSpace) {
 			g2.drawImage(spaceButton.image1, (gameP.screenWidth-gameP.finalTileSize*2)/2+12, 480, null);
-			gameP.ui.spaceButton.isSpace = false;
+			spaceNum++;
+			if(spaceNum > 48) {
+				spaceNum = 0;
+				gameP.ui.spaceButton.isSpace = false;
+			}
+			
 		}
 	}
 	

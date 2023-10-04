@@ -22,16 +22,16 @@ public class ItemController {
 	
 	public void createNPCs() {
 		npcs[0] = new NPC(gameP);
-		npcs[0].worldX = gameP.finalTileSize*9;
-		npcs[0].worldY = gameP.finalTileSize*10;
+		npcs[0].worldX = gameP.finalTileSize*22;
+		npcs[0].worldY = gameP.finalTileSize*23;
 		
 		
 	}
 	
 	public void createMonsters() {
 		monsters[0] = new Slime(gameP);
-		monsters[0].worldX = gameP.finalTileSize*10;
-		monsters[0].worldY = gameP.finalTileSize*10;
+		monsters[0].worldX = gameP.finalTileSize*22;
+		monsters[0].worldY = gameP.finalTileSize*37;
 		
 	}
 }

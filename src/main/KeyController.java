@@ -8,7 +8,7 @@ import javax.print.attribute.standard.Media;
 
 public class KeyController implements KeyListener{
 	GamePanel gameP;
-	public boolean upPress, downPress, leftPress, rightPress, spacePress;
+	public boolean upPress, downPress, leftPress, rightPress, spacePress, attackPress;
 
 	public KeyController(GamePanel gameP) {
 		this.gameP = gameP;
@@ -69,6 +69,9 @@ public class KeyController implements KeyListener{
 			if(key == KeyEvent.VK_SPACE) {
 				spacePress = true;
 			}
+			if(key == KeyEvent.VK_J) {
+				attackPress = true;
+			}
 		}
 		
 		// pause state
@@ -106,6 +109,9 @@ public class KeyController implements KeyListener{
 		}
 		if(key == KeyEvent.VK_SPACE) {
 			spacePress = false;
+		}
+		if(key == KeyEvent.VK_J) {
+			attackPress = false;
 		}
 	}
 

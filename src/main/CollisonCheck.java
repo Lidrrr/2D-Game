@@ -146,7 +146,8 @@ public class CollisonCheck {
 		return index;
 	}
 	
-	public void NPCTouchPlayer(Entity e) {
+	public boolean NPCTouchPlayer(Entity e) {
+		boolean touched = false;
 		e.recP.x += e.worldX;
 		e.recP.y += e.worldY;
 		gameP.player.recP.x += gameP.player.worldX;
@@ -154,32 +155,30 @@ public class CollisonCheck {
 		
 		if(e.direction == "up") {
 			e.recP.y -= e.speed;
-			if(e.recP.intersects(gameP.player.recP)) {
-				e.isCollison = true;
-			}
+			
 		}
 		else if(e.direction == "down") {
 			e.recP.y += e.speed;
-			if(e.recP.intersects(gameP.player.recP)) {
-				e.isCollison = true;
-			}
+			
 		}
 		else if(e.direction == "left") {
 			e.recP.x -= e.speed;
-			if(e.recP.intersects(gameP.player.recP)) {
-				e.isCollison = true;
-			}
+			
 		}
 		else if(e.direction == "right") {
 			e.recP.x += e.speed;
-			if(e.recP.intersects(gameP.player.recP)) {
-				e.isCollison = true;
-			}
+			
+		}
+		if(e.recP.intersects(gameP.player.recP)) {
+			e.isCollison = true;
+			touched = true;
 		}
 		e.recP.x = e.recX;
 		e.recP.y = e.recY;
 		gameP.player.recP.x = gameP.player.recX;
 		gameP.player.recP.y = gameP.player.recY;
+		
+		return touched;
 	}
 	
 	
