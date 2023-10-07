@@ -17,6 +17,7 @@ public class Player extends Entity{
 	public final int screenX, screenY;
 	int attackCount = 0, attackNum = 0;
 	KeyController keyC;
+	boolean attacking = false;
 	
 	public Player(GamePanel gameP, KeyController keyC) {
 		
@@ -27,6 +28,7 @@ public class Player extends Entity{
 		screenX = gameP.screenWidth / 2 - (gameP.finalTileSize/2);
 		screenY = gameP.screenHeight / 2 - (gameP.finalTileSize/2);
 		recP = new Rectangle(16, 16, 16, 16);
+		attackArea = new Rectangle(0, 0, 36, 36);
 		recX = recP.x;
 		recY = recP.y;
 		setDefaultPlayer();
@@ -71,30 +73,38 @@ public class Player extends Entity{
 	
 	// update with the key pressed
 	public void update() {
-		if(keyC.upPress == true) {
-			direction = "up";
-			move();
-			entityCounter++;
+		if(keyC.attackPress) {
+			if(keyC.rightPress || keyC.leftPress || keyC.upPress || keyC.downPress)move();
+			
+			playerAttack();
 		}
-		else if(keyC.downPress == true) {
-			direction = "down";
-			move();
-			entityCounter++;
+		else {
+			if(keyC.upPress == true) {
+				direction = "up";
+				move();
+				entityCounter++;
+			}
+			else if(keyC.downPress == true) {
+				direction = "down";
+				move();
+				entityCounter++;
+			}
+			else if(keyC.leftPress == true) {
+				direction = "left";
+				move();
+				entityCounter++;
+			}
+			else if(keyC.rightPress == true) {
+				direction = "right";
+				move();
+				entityCounter++;
+			}
+			else if(keyC.spacePress == true) {
+				move();
+				entityCounter++;
+			}
 		}
-		else if(keyC.leftPress == true) {
-			direction = "left";
-			move();
-			entityCounter++;
-		}
-		else if(keyC.rightPress == true) {
-			direction = "right";
-			move();
-			entityCounter++;
-		}
-		else if(keyC.spacePress == true) {
-			move();
-			entityCounter++;
-		}
+		
 		
 		animate();
 		if(invincible) {
@@ -104,6 +114,7 @@ public class Player extends Entity{
 				invinvibleCount = 0;
 			}
 		}
+		
 	}
 	
 	// movement logic with collision check
@@ -121,13 +132,10 @@ public class Player extends Entity{
 		int monsterIndex = gameP.collisonC.checkEntity(this, gameP.itemC.monsters);
 		MonsterInteration(monsterIndex);
 		
-		if(gameP.keyController.attackPress) {
-			playerAttack();
-		}
 		// check damage
 		gameP.eHandler.checkEvent();
 		
-		
+		//if(gameP.keyController.attackPress)playerAttack();
 		
 		if(isCollison == false && keyC.spacePress == false) {
 			if(direction == "up") {
@@ -162,7 +170,7 @@ public class Player extends Entity{
 				if(gameP.keyController.attackPress) {
 					tempY -= gameP.finalTileSize;
 					if(attackNum == 1) {
-						image = attackUp2;
+						image = attackUp1;
 					}
 					else if(attackNum == 2) {
 						image = attackUp2;
@@ -234,7 +242,8 @@ public class Player extends Entity{
 				}
 				break;
 			case "static":
-				image = down1;
+				if(gameP.keyController.attackPress)image = attackDown2;
+				else image = down1;
 				break;
 			}
 			if(name == "player" && invincible) {
@@ -251,24 +260,66 @@ public class Player extends Entity{
 		attackCount++;
 		if(attackCount <= 24) {
 			attackNum = 2;
-		}
-		else if (attackCount > 24 && attackCount < 28) {
-			attackNum = 1;
-			
+			attackAreaCheck();
 		}
 		else {
+			attackNum = 2;
+			attackAreaCheck();
 			attackCount = 0;
 		}
 	}
 	
+	// attacking area check
+	public void attackAreaCheck() {
+		// save data
+		int x = worldX;
+		int y = worldY;
+		int areaWidth = recP.width;
+		int areaHeight = recP.height;
+		
+		switch (direction){
+		case "up": worldY -= attackArea.height; break;
+		case "down": worldY += attackArea.height; break;
+		case "left": worldX -= attackArea.width; break;
+		case "right": worldX += attackArea.width; break;
+		}
+		
+		// attackArea becomes recP(solidArea)
+		recP.width = attackArea.width;
+		recP.height = attackArea.height;
+		int index = gameP.collisonC.checkEntity(this, gameP.itemC.monsters);
+		damageMonster(index);
+		
+		// recover data
+		worldX = x;
+		worldY = y;
+		recP.width = areaWidth;
+		recP.height = areaHeight;
+	}
+	
 	// deal with interactions with NPC
-	private void MonsterInteration(int index) {
+	public void MonsterInteration(int index) {
+		if(gameP.keyController.attackPress) attacking = true;
 		if(index != 999) {
 			if(!invincible) {
 				currentLife--;
 				invincible = true;
 			}
 			
+		}
+	}
+	
+	// cause damage on monster
+	public void damageMonster(int index) {
+		if(index != 999) {
+			if(gameP.itemC.monsters[index].invincible == false) {
+				gameP.itemC.monsters[index].currentLife -= 1;
+				gameP.itemC.monsters[index].invincible = true;
+				gameP.itemC.monsters[index].damageReact();
+				if(gameP.itemC.monsters[index].currentLife == 0) {
+					gameP.itemC.monsters[index].dying = true;
+				}
+			}
 		}
 	}
 	

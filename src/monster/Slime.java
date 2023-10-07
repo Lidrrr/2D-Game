@@ -6,9 +6,11 @@ import entity.Entity;
 import main.GamePanel;
 
 public class Slime extends Entity{
-
+	GamePanel gameP;
 	public Slime(GamePanel gameP) {
+		
 		super(gameP);
+		this.gameP = gameP;
 		name = "slime";
 		speed = 1;
 		maxLife = 4;
@@ -35,6 +37,12 @@ public class Slime extends Entity{
 		right2 = setUpImages("/monsters/slime2");
 	}
 
+	// when player hits it, move to the direction as player faces(move away)
+	public void damageReact() {
+		entityCounter = 0;
+		direction = gameP.player.direction;
+	}
+	
 	// slime behavior
 	public void update() {		
 		moveCounter++;
@@ -59,5 +67,13 @@ public class Slime extends Entity{
 		move();
 		entityCounter++;
 		animate();
+		
+		if(invincible) {
+			invinvibleCount++;
+			if(invinvibleCount > 40) {
+				invincible = false;
+				invinvibleCount = 0;
+			}
+		}
 	}
 }
