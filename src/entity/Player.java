@@ -9,6 +9,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import item.Shield;
+import item.Sword;
 import main.ExtraTools;
 import main.GamePanel;
 import main.KeyController;
@@ -43,6 +45,26 @@ public class Player extends Entity{
 		direction = "static";
 		maxLife = 6;
 		currentLife = maxLife;
+		level = 1;
+		strength = 1;
+		dexterity = 1;
+		exp = 0;
+		nextLvlExp = 5;
+		coin = 0;
+		currentSword = new Sword(gameP);
+		currentShield = new Shield(gameP);
+		attack = getAttackVal();
+		defense = getDefenseVal();
+	}
+	
+	// higher strength means higher attack value
+	public int getAttackVal() {
+		return strength * currentSword.attackValue;
+	}
+	
+	// higher dexterity means higher defense value
+	public int getDefenseVal() {
+		return dexterity * currentSword.defenseValue;
 	}
 	
 	// read in player images

@@ -63,6 +63,88 @@ public class UI {
 			drawPlayerLife();
 			drawDialogue();
 		}
+		else if(gameP.gameState == gameP.status) {
+			drawPlayerLife();
+			drawStatus();
+		}
+	}
+	
+	// draw status screen
+	public void drawStatus() {
+		// frame
+		Color color = new Color(0, 0, 0, 225);
+		g2.setColor(color);
+		g2.fillRoundRect(96, 72, 240, 480, 35, 35);
+		color = new Color(255, 255, 255);
+		g2.setColor(color);
+		g2.setStroke(new BasicStroke(3));
+		g2.drawRoundRect(98, 74, 236, 476, 25, 25);
+		
+		// text
+		g2.setColor(Color.white);
+		g2.setFont(g2.getFont().deriveFont(32F));
+		int textX = 116;
+		int textY = 120;
+		final int lineSpace = 32;
+		g2.drawString("Level", textX, textY);
+		textY+=lineSpace;
+		g2.drawString("Life", textX, textY);
+		textY+=lineSpace;
+		g2.drawString("Strength", textX, textY);
+		textY+=lineSpace;
+		g2.drawString("Dexterity", textX, textY);
+		textY+=lineSpace;
+		g2.drawString("Attack", textX, textY);
+		textY+=lineSpace;
+		g2.drawString("Defense", textX, textY);
+		textY+=lineSpace;
+		g2.drawString("Exp", textX, textY);
+		textY+=lineSpace;
+		g2.drawString("Next Level", textX, textY);
+		textY+=lineSpace;
+		g2.drawString("Coin", textX, textY);
+		textY+=lineSpace*2;
+		g2.drawString("Weapon", textX, textY);
+		textY+=lineSpace*2;
+		g2.drawString("Shield", textX, textY);
+		textY+=lineSpace*2;
+		
+		// values
+		textY = 120;
+		textX = getAlignToRightX(String.valueOf(gameP.player.level), 306);
+		g2.drawString(String.valueOf(gameP.player.level), textX, textY);
+		textY+=lineSpace;
+		String lifeString = String.valueOf(gameP.player.currentLife) + '/' + String.valueOf(gameP.player.maxLife);
+		textX = getAlignToRightX(lifeString, 306);
+		g2.drawString(lifeString, textX, textY);
+		textY+=lineSpace;
+		textX = getAlignToRightX(String.valueOf(gameP.player.strength), 306);
+		g2.drawString(String.valueOf(gameP.player.strength), textX, textY);
+		textY+=lineSpace;
+		textX = getAlignToRightX(String.valueOf(gameP.player.dexterity), 306);
+		g2.drawString(String.valueOf(gameP.player.dexterity), textX, textY);
+		textY+=lineSpace;
+		textX = getAlignToRightX(String.valueOf(gameP.player.attack), 306);
+		g2.drawString(String.valueOf(gameP.player.attack), textX, textY);
+		textY+=lineSpace;
+		textX = getAlignToRightX(String.valueOf(gameP.player.defense), 306);
+		g2.drawString(String.valueOf(gameP.player.defense), textX, textY);
+		textY+=lineSpace;
+		textX = getAlignToRightX(String.valueOf(gameP.player.exp), 306);
+		g2.drawString(String.valueOf(gameP.player.exp), textX, textY);
+		textY+=lineSpace;
+		textX = getAlignToRightX(String.valueOf(gameP.player.nextLvlExp), 306);
+		g2.drawString(String.valueOf(gameP.player.nextLvlExp), textX, textY);
+		textY+=lineSpace;
+		textX = getAlignToRightX(String.valueOf(gameP.player.coin), 306);
+		g2.drawString(String.valueOf(gameP.player.coin), textX, textY);
+		textY+=lineSpace;
+		
+		// weapon images
+		g2.drawImage(gameP.player.currentSword.down1,306-gameP.finalTileSize,textY, null);
+		textY+=lineSpace*2;
+		g2.drawImage(gameP.player.currentShield.down1,306-gameP.finalTileSize,textY, null);
+		textY+=lineSpace;
 	}
 	
 	// draw buttons
@@ -133,6 +215,12 @@ public class UI {
 	public int getCentreX(String text) {
 		int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 		int x = gameP.screenWidth/2 - length/2;
+		return x;
+	}
+	
+	public int getAlignToRightX(String text, int endX) {
+		int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+		int x = endX - length;
 		return x;
 	}
 	

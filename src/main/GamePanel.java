@@ -28,6 +28,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public final int playing = 1;
 	public final int pause = 2;
 	public final int dialogue = 3;
+	public final int status = 4;
 	
 	// screen info.
 	public final int screenCol = 16;

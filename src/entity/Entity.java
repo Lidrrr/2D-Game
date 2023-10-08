@@ -30,6 +30,14 @@ public class Entity {
 	// for NPC move
 	public int moveCounter = 0;
 	
+	//player status
+	public int level, strength, dexterity, exp, nextLvlExp, coin, attack, defense;
+	public Entity currentSword;
+	public Entity currentShield;
+	
+	// weapon status
+	public int attackValue;
+	public int defenseValue;
 	// attack
 	public boolean attacking = false;
 	public boolean invincible = false;
