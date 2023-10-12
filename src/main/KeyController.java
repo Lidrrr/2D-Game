@@ -46,6 +46,34 @@ public class KeyController implements KeyListener{
 		// status state
 		else if(gameP.gameState == gameP.status) {
 			statusState(key);
+			cursorMove(key);
+		}
+	}
+	
+	public void cursorMove(int key) {
+		if(key == KeyEvent.VK_W) {
+			gameP.ui.slotRow--;
+			if(gameP.ui.slotRow < 0) {
+				gameP.ui.slotRow = 0;
+			}
+		}
+		if(key == KeyEvent.VK_A) {
+			gameP.ui.slotCol--;
+			if(gameP.ui.slotCol < 0) {
+				gameP.ui.slotCol = 0;
+			}
+		}
+		if(key == KeyEvent.VK_S) {
+			gameP.ui.slotRow++;
+			if(gameP.ui.slotRow > 3) {
+				gameP.ui.slotRow = 3;
+			}
+		}
+		if(key == KeyEvent.VK_D) {
+			gameP.ui.slotCol++;
+			if(gameP.ui.slotCol > 4) {
+				gameP.ui.slotCol = 4;
+			}
 		}
 	}
 	
@@ -116,6 +144,9 @@ public class KeyController implements KeyListener{
 	public void statusState(int key) {
 		if(key == KeyEvent.VK_I) {
 			gameP.gameState = gameP.playing;
+		}
+		if(key == KeyEvent.VK_K) {
+			gameP.player.switchEquip();
 		}
 	}
 	

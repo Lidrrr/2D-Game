@@ -18,6 +18,17 @@ public class ItemController {
 	}
 	
 	public void createItems() {
+		items[0] = new Axe(gameP);
+		items[0].worldX = gameP.finalTileSize*21;
+		items[0].worldY = gameP.finalTileSize*23;
+		
+		items[1] = new Shield_Blue(gameP);
+		items[1].worldX = gameP.finalTileSize*22;
+		items[1].worldY = gameP.finalTileSize*24;
+		
+		items[2] = new Potion(gameP);
+		items[2].worldX = gameP.finalTileSize*24;
+		items[2].worldY = gameP.finalTileSize*19;
 	}
 	
 	public void createNPCs() {

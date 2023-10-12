@@ -32,8 +32,11 @@ public class Entity {
 	
 	//player status
 	public int level, strength, dexterity, exp, nextLvlExp, coin, attack, defense;
-	public Entity currentSword;
+	public Entity currentWeapon;
 	public Entity currentShield;
+	public boolean isWeapon = false;
+	public boolean isShield = false;
+	public boolean isConsumable = false;
 	
 	// weapon status
 	public int attackValue;
@@ -45,12 +48,12 @@ public class Entity {
 	
 	// for items
 	public BufferedImage image, heart_full, heart_half, heart_blank;
-	public String name;
+	public String name, description;
 	public boolean collison = false;
 	
 	// life
 	public int maxLife, currentLife;
-	
+	public int receivedDamage;
 	//health bar
 	public boolean hpBar = false;
 	int hpBarCounter = 0;
@@ -164,7 +167,11 @@ public class Entity {
 			if(name == "slime" && invincible) {
 				hpBar = true;
 				hpBarCounter = 0;
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+				if(receivedDamage!=0) {
+					receivedDamage=0;
+					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+				}
+				
 			}
 			if(dying) {
 				dyingAnimation(g2);
@@ -206,7 +213,7 @@ public class Entity {
 			entityCounter = 0;
 		}
 	}
-	
+	public void use() {}
 	public void update() {}
 	public void transfer() {}
 	public void damageReact() {}
@@ -221,8 +228,11 @@ public class Entity {
 		
 		if(this.name == "slime" && touched) {
 			if(!gameP.player.invincible) {
-				gameP.player.currentLife--;
-				gameP.player.invincible = true;
+				receivedDamage = attack - gameP.player.defense;
+				if(receivedDamage<0)receivedDamage=0;
+				gameP.player.currentLife-=receivedDamage;
+				if(receivedDamage>0)gameP.player.invincible = true;
+				
 			}
 		}
 		

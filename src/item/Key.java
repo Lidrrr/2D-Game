@@ -9,7 +9,7 @@ public class Key extends Entity{
 		super(gameP);
 		name = "Key";
 		down1 = setUpImages("/items/key");
-		
+		description = "a normal key";
 	}
 
 }

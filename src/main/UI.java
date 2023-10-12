@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.IntToDoubleFunction;
 
 import button.SpaceButton;
 import entity.Entity;
@@ -25,6 +26,8 @@ public class UI {
 	int spaceNum = 0;
 	int spaceCount = 0;
 	public String diaString;
+	public int slotCol = 0;
+	public int slotRow = 0;
 	
 	public UI(GamePanel gameP) {
 		this.gameP = gameP;
@@ -66,24 +69,80 @@ public class UI {
 		else if(gameP.gameState == gameP.status) {
 			drawPlayerLife();
 			drawStatus();
+			drawBag();
 		}
+	}
+	
+	// what is in player's bag
+	public void drawBag() {
+		// frame
+		drawWindowFrame(432, 72, 288, 240);
+		
+		// slot 
+		final int startX = 452;
+		final int startY = 92;
+		int slotX = startX;
+		int slotY = startY;
+		final int slotSize = 50;
+		// items
+		for(int i = 0; i < gameP.player.bagItems.size(); i++) {
+			if(gameP.player.bagItems.get(i) == gameP.player.currentWeapon ||
+					gameP.player.bagItems.get(i) == gameP.player.currentShield) {
+				g2.setColor(Color.YELLOW);
+				g2.fillOval(slotX, slotY, 5, 5);
+			}
+			if(gameP.player.bagItems.get(i).isConsumable) {
+				g2.setColor(Color.GREEN);
+				g2.fillOval(slotX, slotY, 5, 5);
+			}
+			g2.drawImage(gameP.player.bagItems.get(i).down1, slotX, slotY, null);
+			slotX+=slotSize;
+			if(i == 4 || i == 9 || i == 14) {
+				slotX = startX;
+				slotY += gameP.finalTileSize;
+			}
+		}
+		
+		// description
+		
+		int textX = 452;
+		int textY = 353;
+		int itemIndex = slotCol + (5*slotRow);
+		if(itemIndex < gameP.player.bagItems.size()){
+			drawWindowFrame(432, 313, 288, 144);
+			g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+			g2.drawString("[ "+gameP.player.bagItems.get(itemIndex).name+" ]", textX, textY);
+			g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 28F));
+			g2.drawString(gameP.player.bagItems.get(itemIndex).description, textX, textY+26);
+		}
+		
+		// cursor
+		int curX = startX + (slotSize*slotCol);
+		int curY = startY + (slotSize*slotRow);
+		g2.setColor(Color.white);
+		g2.setStroke(new BasicStroke(2));
+		g2.drawRoundRect(curX, curY, gameP.finalTileSize, gameP.finalTileSize, 10, 10);
+	}
+	
+	public void drawWindowFrame(int x, int y, int width, int height) {
+		Color color = new Color(0, 0, 0, 225);
+		g2.setColor(color);
+		g2.fillRoundRect(x, y, width, height, 35, 35);
+		color = new Color(255, 255, 255);
+		g2.setColor(color);
+		g2.setStroke(new BasicStroke(3));
+		g2.drawRoundRect(x+2, y+2, width-4, height-4, 25, 25);
 	}
 	
 	// draw status screen
 	public void drawStatus() {
 		// frame
-		Color color = new Color(0, 0, 0, 225);
-		g2.setColor(color);
-		g2.fillRoundRect(96, 72, 240, 480, 35, 35);
-		color = new Color(255, 255, 255);
-		g2.setColor(color);
-		g2.setStroke(new BasicStroke(3));
-		g2.drawRoundRect(98, 74, 236, 476, 25, 25);
+		drawWindowFrame(72, 72, 240, 480);
 		
 		// text
 		g2.setColor(Color.white);
 		g2.setFont(g2.getFont().deriveFont(32F));
-		int textX = 116;
+		int textX = 92;
 		int textY = 120;
 		final int lineSpace = 32;
 		g2.drawString("Level", textX, textY);
@@ -111,39 +170,39 @@ public class UI {
 		
 		// values
 		textY = 120;
-		textX = getAlignToRightX(String.valueOf(gameP.player.level), 306);
+		textX = getAlignToRightX(String.valueOf(gameP.player.level), 282);
 		g2.drawString(String.valueOf(gameP.player.level), textX, textY);
 		textY+=lineSpace;
 		String lifeString = String.valueOf(gameP.player.currentLife) + '/' + String.valueOf(gameP.player.maxLife);
-		textX = getAlignToRightX(lifeString, 306);
+		textX = getAlignToRightX(lifeString, 282);
 		g2.drawString(lifeString, textX, textY);
 		textY+=lineSpace;
-		textX = getAlignToRightX(String.valueOf(gameP.player.strength), 306);
+		textX = getAlignToRightX(String.valueOf(gameP.player.strength), 282);
 		g2.drawString(String.valueOf(gameP.player.strength), textX, textY);
 		textY+=lineSpace;
-		textX = getAlignToRightX(String.valueOf(gameP.player.dexterity), 306);
+		textX = getAlignToRightX(String.valueOf(gameP.player.dexterity), 282);
 		g2.drawString(String.valueOf(gameP.player.dexterity), textX, textY);
 		textY+=lineSpace;
-		textX = getAlignToRightX(String.valueOf(gameP.player.attack), 306);
+		textX = getAlignToRightX(String.valueOf(gameP.player.attack), 282);
 		g2.drawString(String.valueOf(gameP.player.attack), textX, textY);
 		textY+=lineSpace;
-		textX = getAlignToRightX(String.valueOf(gameP.player.defense), 306);
+		textX = getAlignToRightX(String.valueOf(gameP.player.defense), 282);
 		g2.drawString(String.valueOf(gameP.player.defense), textX, textY);
 		textY+=lineSpace;
-		textX = getAlignToRightX(String.valueOf(gameP.player.exp), 306);
+		textX = getAlignToRightX(String.valueOf(gameP.player.exp), 282);
 		g2.drawString(String.valueOf(gameP.player.exp), textX, textY);
 		textY+=lineSpace;
-		textX = getAlignToRightX(String.valueOf(gameP.player.nextLvlExp), 306);
+		textX = getAlignToRightX(String.valueOf(gameP.player.nextLvlExp), 282);
 		g2.drawString(String.valueOf(gameP.player.nextLvlExp), textX, textY);
 		textY+=lineSpace;
-		textX = getAlignToRightX(String.valueOf(gameP.player.coin), 306);
+		textX = getAlignToRightX(String.valueOf(gameP.player.coin), 282);
 		g2.drawString(String.valueOf(gameP.player.coin), textX, textY);
 		textY+=lineSpace;
 		
 		// weapon images
-		g2.drawImage(gameP.player.currentSword.down1,306-gameP.finalTileSize,textY, null);
+		g2.drawImage(gameP.player.currentWeapon.down1,282-gameP.finalTileSize,textY, null);
 		textY+=lineSpace*2;
-		g2.drawImage(gameP.player.currentShield.down1,306-gameP.finalTileSize,textY, null);
+		g2.drawImage(gameP.player.currentShield.down1,282-gameP.finalTileSize,textY, null);
 		textY+=lineSpace;
 	}
 	
