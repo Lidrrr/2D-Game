@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import item.Fireball;
 import item.Key;
 import item.Shield;
 import item.Sword;
@@ -24,6 +25,8 @@ public class Player extends Entity{
 	boolean attacking = false;
 	public ArrayList<Entity> bagItems = new ArrayList<>();
 	public final int bagSize = 20;
+	int shootCounter = 0;
+	int manaCounter = 0;
 	
 	public Player(GamePanel gameP, KeyController keyC) {
 		
@@ -56,6 +59,8 @@ public class Player extends Entity{
 		speed = 4;
 		direction = "static";
 		maxLife = 6;
+		maxMana = 4;
+		currentMana = maxMana;
 		currentLife = maxLife;
 		level = 1;
 		strength = 1;
@@ -67,6 +72,7 @@ public class Player extends Entity{
 		currentShield = new Shield(gameP);
 		attack = getAttackVal();
 		defense = getDefenseVal();
+		projectile = new Fireball(gameP);
 	}
 	
 	// higher strength means higher attack value
@@ -146,6 +152,12 @@ public class Player extends Entity{
 			
 			playerAttack();
 		}
+		else if (gameP.keyController.shootPress && !projectile.living && shootCounter == 30 && (currentMana >= projectile.useCost)) {
+			projectile.set(worldX, worldY, direction, true, this);
+			currentMana-=projectile.useCost;
+			shootCounter = 0;
+			gameP.projectiles.add(projectile);
+		}
 		else {
 			if(keyC.upPress == true) {
 				direction = "up";
@@ -173,7 +185,14 @@ public class Player extends Entity{
 			}
 		}
 		
-		
+		if(shootCounter < 30)shootCounter++;
+		if(manaCounter<240) {
+			manaCounter++;
+		}
+		else {
+			if(currentMana<maxMana)currentMana++;
+			manaCounter=0;
+		}
 		animate();
 		if(invincible) {
 			invinvibleCount++;
@@ -355,7 +374,7 @@ public class Player extends Entity{
 		recP.width = attackArea.width;
 		recP.height = attackArea.height;
 		int index = gameP.collisonC.checkEntity(this, gameP.itemC.monsters);
-		damageMonster(index);
+		damageMonster(index, attack);
 		
 		// recover data
 		worldX = x;
@@ -368,7 +387,7 @@ public class Player extends Entity{
 	public void MonsterInteration(int index) {
 		if(gameP.keyController.attackPress) attacking = true;
 		if(index != 999) {
-			if(!invincible) {
+			if(!invincible && !gameP.itemC.monsters[index].dying) {
 				receivedDamage = gameP.itemC.monsters[index].attack - defense;
 				if(receivedDamage<0)receivedDamage=0;
 				currentLife-=receivedDamage;
@@ -380,13 +399,13 @@ public class Player extends Entity{
 	}
 	
 	// cause damage on monster
-	public void damageMonster(int index) {
+	public void damageMonster(int index, int attack) {
 		if(index != 999) {
 			if(gameP.itemC.monsters[index].invincible == false) {
 				receivedDamage = attack - gameP.itemC.monsters[index].defense;
 				if(receivedDamage<0)receivedDamage=0;
 				gameP.itemC.monsters[index].currentLife -= receivedDamage;
-				if(receivedDamage>0)gameP.itemC.monsters[index].invincible = true;
+				gameP.itemC.monsters[index].invincible = true;
 				gameP.itemC.monsters[index].damageReact();
 				if(gameP.itemC.monsters[index].currentLife == 0) {
 					gameP.itemC.monsters[index].dying = true;

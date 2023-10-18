@@ -15,12 +15,13 @@ import button.SpaceButton;
 import entity.Entity;
 import item.Heart;
 import item.Key;
+import item.Mana;
 
 public class UI {
 	GamePanel gameP;
 	Graphics2D g2;
 	Font pixelFont;
-	BufferedImage heart_full, heart_half, heart_blank;
+	BufferedImage heart_full, heart_half, heart_blank, mana_blank, mana_full;
 	int commandNum = 0;
 	public SpaceButton spaceButton;
 	int spaceNum = 0;
@@ -45,6 +46,9 @@ public class UI {
 		heart_full = heartItem.heart_full;
 		heart_half = heartItem.heart_half;
 		heart_blank = heartItem.heart_blank;
+		// mana images
+		mana_blank = new Mana(gameP).mana_blank;
+		mana_full = new Mana(gameP).mana_full;
 	}
 	
 	public void draw(Graphics2D g2) {
@@ -56,18 +60,22 @@ public class UI {
 		}
 		else if(gameP.gameState == gameP.playing) {
 			drawPlayerLife();
+			drawPlayerMana();
 			drawButton();
 		}
 		else if(gameP.gameState == gameP.pause) {
 			drawPlayerLife();
+			drawPlayerMana();
 			g2.drawString("Pause", 50, 50);
 		}
 		else if(gameP.gameState == gameP.dialogue) {
 			drawPlayerLife();
+			drawPlayerMana();
 			drawDialogue();
 		}
 		else if(gameP.gameState == gameP.status) {
 			drawPlayerLife();
+			drawPlayerMana();
 			drawStatus();
 			drawBag();
 		}
@@ -149,6 +157,8 @@ public class UI {
 		textY+=lineSpace;
 		g2.drawString("Life", textX, textY);
 		textY+=lineSpace;
+		g2.drawString("Mana", textX, textY);
+		textY+=lineSpace;
 		g2.drawString("Strength", textX, textY);
 		textY+=lineSpace;
 		g2.drawString("Dexterity", textX, textY);
@@ -162,11 +172,11 @@ public class UI {
 		g2.drawString("Next Level", textX, textY);
 		textY+=lineSpace;
 		g2.drawString("Coin", textX, textY);
-		textY+=lineSpace*2;
+		textY+=(lineSpace*2-8);
 		g2.drawString("Weapon", textX, textY);
-		textY+=lineSpace*2;
+		textY+=(lineSpace*2-8);
 		g2.drawString("Shield", textX, textY);
-		textY+=lineSpace*2;
+		textY+=(lineSpace*2-8);
 		
 		// values
 		textY = 120;
@@ -174,6 +184,10 @@ public class UI {
 		g2.drawString(String.valueOf(gameP.player.level), textX, textY);
 		textY+=lineSpace;
 		String lifeString = String.valueOf(gameP.player.currentLife) + '/' + String.valueOf(gameP.player.maxLife);
+		textX = getAlignToRightX(lifeString, 282);
+		g2.drawString(lifeString, textX, textY);
+		textY+=lineSpace;
+		lifeString = String.valueOf(gameP.player.currentMana) + '/' + String.valueOf(gameP.player.maxMana);
 		textX = getAlignToRightX(lifeString, 282);
 		g2.drawString(lifeString, textX, textY);
 		textY+=lineSpace;
@@ -197,11 +211,11 @@ public class UI {
 		textY+=lineSpace;
 		textX = getAlignToRightX(String.valueOf(gameP.player.coin), 282);
 		g2.drawString(String.valueOf(gameP.player.coin), textX, textY);
-		textY+=lineSpace;
+		textY+=(lineSpace-8);
 		
 		// weapon images
 		g2.drawImage(gameP.player.currentWeapon.down1,282-gameP.finalTileSize,textY, null);
-		textY+=lineSpace*2;
+		textY+=(lineSpace*2-8);
 		g2.drawImage(gameP.player.currentShield.down1,282-gameP.finalTileSize,textY, null);
 		textY+=lineSpace;
 	}
@@ -218,7 +232,20 @@ public class UI {
 			
 		}
 	}
-	
+	public void drawPlayerMana() {
+		int x = 20;
+		int y = 72;
+		for(int i = 0; i < gameP.player.maxMana; i++) {
+			g2.drawImage(mana_blank, x, y, null);
+			x+= 36;
+		}
+		x = 20;
+		y = 72;
+		for(int i = 0; i < gameP.player.currentMana; i++) {
+			g2.drawImage(mana_full, x, y, null);
+			x+= 36;
+		}
+	}
 	// draw player life
 	public void drawPlayerLife() {
 		int x = gameP.finalTileSize/2;

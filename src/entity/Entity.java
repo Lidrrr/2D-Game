@@ -47,12 +47,14 @@ public class Entity {
 	public int invinvibleCount = 0;
 	
 	// for items
-	public BufferedImage image, heart_full, heart_half, heart_blank;
+	public BufferedImage image, heart_full, heart_half, heart_blank, mana_full, mana_blank;
 	public String name, description;
 	public boolean collison = false;
 	
 	// life
-	public int maxLife, currentLife;
+	public int maxLife, currentLife, currentMana, maxMana;
+	public int useCost;
+	public Projectiles projectile;
 	public int receivedDamage;
 	//health bar
 	public boolean hpBar = false;
@@ -145,6 +147,8 @@ public class Entity {
 				break;
 			}
 			
+			//if(shootCounter < 30)shootCounter++;
+			
 			// health bar
 			if(name == "slime" && hpBar) {
 				hpBarCounter++;
@@ -167,9 +171,10 @@ public class Entity {
 			if(name == "slime" && invincible) {
 				hpBar = true;
 				hpBarCounter = 0;
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
 				if(receivedDamage!=0) {
-					receivedDamage=0;
-					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+					//receivedDamage=0;
+					//g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
 				}
 				
 			}
@@ -213,6 +218,14 @@ public class Entity {
 			entityCounter = 0;
 		}
 	}
+	void damagePlayer(int attack) {
+		if(!gameP.player.invincible) {
+			receivedDamage = attack - gameP.player.defense;
+			if(receivedDamage<0)receivedDamage=0;
+			gameP.player.currentLife-=receivedDamage;
+			if(receivedDamage>0)gameP.player.invincible = true;
+		}
+	}
 	public void use() {}
 	public void update() {}
 	public void transfer() {}
@@ -227,13 +240,7 @@ public class Entity {
 		boolean touched = gameP.collisonC.NPCTouchPlayer(this);
 		
 		if(this.name == "slime" && touched) {
-			if(!gameP.player.invincible) {
-				receivedDamage = attack - gameP.player.defense;
-				if(receivedDamage<0)receivedDamage=0;
-				gameP.player.currentLife-=receivedDamage;
-				if(receivedDamage>0)gameP.player.invincible = true;
-				
-			}
+			damagePlayer(attack);
 		}
 		
 		if(isCollison == false) {

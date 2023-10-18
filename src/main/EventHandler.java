@@ -59,6 +59,7 @@ public class EventHandler {
 			 gameP.gameState = gameState;
 			 gameP.ui.diaString = "You have been healed";
 			 gameP.player.currentLife = gameP.player.maxLife;
+			 gameP.player.currentMana = gameP.player.maxMana;
 		 }
 	 }
 	 

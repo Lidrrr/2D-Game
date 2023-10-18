@@ -53,7 +53,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public CollisonCheck collisonC = new CollisonCheck(this);
 	public EventHandler eHandler = new EventHandler(this);
 	public ItemController itemC = new ItemController(this);
-	
+	public ArrayList<Entity> projectiles = new ArrayList<>();
 	ArrayList<Entity> entities = new ArrayList<Entity>();
 	
 	// FPS
@@ -116,6 +116,12 @@ public class GamePanel extends JPanel implements Runnable{
 					else if(!itemC.monsters[i].living) itemC.monsters[i] = null;
 				}
 			}
+			for(int i = 0; i < projectiles.size(); i++) {
+				if(projectiles.get(i) != null) {
+					if(projectiles.get(i).living) projectiles.get(i).update();
+					else projectiles.remove(i);
+				}
+			}
 		}
 		else if(gameState == pause){
 			
@@ -151,6 +157,12 @@ public class GamePanel extends JPanel implements Runnable{
 			for(int i = 0;i < itemC.monsters.length; i++) {
 				if(itemC.monsters[i] != null) {
 					entities.add(itemC.monsters[i]);
+					
+				}
+			}
+			for(int i = 0;i < projectiles.size(); i++) {
+				if(projectiles.get(i) != null) {
+					entities.add(projectiles.get(i));
 					
 				}
 			}
