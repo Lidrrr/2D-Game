@@ -68,13 +68,18 @@ public class Player extends Entity{
 		exp = 0;
 		nextLvlExp = 5;
 		coin = 0;
+		// equip
 		currentWeapon = new Sword(gameP);
 		currentShield = new Shield(gameP);
 		attack = getAttackVal();
 		defense = getDefenseVal();
 		projectile = new Fireball(gameP);
+		projectileAttack = getProjectileAttack();
 	}
 	
+	public int getProjectileAttack() {
+		return strength*projectile.attack;
+	}
 	// higher strength means higher attack value
 	public int getAttackVal() {
 		attackArea = currentWeapon.attackArea;
@@ -201,7 +206,7 @@ public class Player extends Entity{
 				invinvibleCount = 0;
 			}
 		}
-		
+		if(currentLife>maxLife)currentLife=maxLife;
 	}
 	
 	// movement logic with collision check
@@ -210,7 +215,8 @@ public class Player extends Entity{
 		gameP.collisonC.checkCollison(this);
 		int itemIndex = gameP.collisonC.checkItem(this, true);
 		pickUpItems(itemIndex);
-		
+		// check interactive tiles
+		gameP.collisonC.checkEntity(this, gameP.iTiles);
 		// check NPC collision
 		int npcIndex = gameP.collisonC.checkEntity(this, gameP.itemC.npcs);
 		NPCInteraction(npcIndex);
@@ -375,14 +381,22 @@ public class Player extends Entity{
 		recP.height = attackArea.height;
 		int index = gameP.collisonC.checkEntity(this, gameP.itemC.monsters);
 		damageMonster(index, attack);
-		
+		index = gameP.collisonC.checkEntity(this, gameP.iTiles);
+		damageInteractiveTiles(index);
 		// recover data
 		worldX = x;
 		worldY = y;
 		recP.width = areaWidth;
 		recP.height = areaHeight;
 	}
-	
+	public void damageInteractiveTiles(int index) {
+		if(index != 999 && gameP.iTiles[index].breakable) {
+			gameP.iTiles[index].currentLife--;
+			System.out.println(gameP.iTiles[index].currentLife);
+			if(gameP.iTiles[index].currentLife == 0)gameP.iTiles[index] = gameP.iTiles[index].interact();
+			
+		}
+	}
 	// deal with interactions with monster
 	public void MonsterInteration(int index) {
 		if(gameP.keyController.attackPress) attacking = true;
@@ -427,7 +441,7 @@ public class Player extends Entity{
 			dexterity++;
 			attack = getAttackVal();
 			defense = getDefenseVal();
-			
+			projectileAttack = getProjectileAttack();
 			gameP.gameState = gameP.dialogue;
 			gameP.ui.diaString = "LEVEL UPPPPPPPPPPPPPP";
 			
@@ -448,6 +462,10 @@ public class Player extends Entity{
 	// deal with pickups
 	public void pickUpItems(int index) {
 		if(index != 999) {
+			if(gameP.itemC.items[index].name == "Heart") {
+				gameP.itemC.items[index].use();
+				gameP.itemC.items[index] = null;
+			}
 			if(bagItems.size() < bagSize) {
 				bagItems.add(gameP.itemC.items[index]);
 			}

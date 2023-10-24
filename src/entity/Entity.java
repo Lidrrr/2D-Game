@@ -31,7 +31,7 @@ public class Entity {
 	public int moveCounter = 0;
 	
 	//player status
-	public int level, strength, dexterity, exp, nextLvlExp, coin, attack, defense;
+	public int level, strength, dexterity, exp, nextLvlExp, coin, attack, defense, projectileAttack;
 	public Entity currentWeapon;
 	public Entity currentShield;
 	public boolean isWeapon = false;
@@ -50,6 +50,7 @@ public class Entity {
 	public BufferedImage image, heart_full, heart_half, heart_blank, mana_full, mana_blank;
 	public String name, description;
 	public boolean collison = false;
+	public int value;
 	
 	// life
 	public int maxLife, currentLife, currentMana, maxMana;
@@ -187,6 +188,19 @@ public class Entity {
 		}
 	}
 	
+	// monster drop item logic
+	public void dropAfterDie() {}
+	public void dropItem(Entity e) {
+		for(int i = 0;i<gameP.itemC.items.length;i++) {
+			if(gameP.itemC.items[i]== null) {
+				gameP.itemC.items[i] = e;
+				gameP.itemC.items[i].worldX = worldX;
+				gameP.itemC.items[i].worldY = worldY;
+				break;
+			}
+		}
+	}
+	
 	// dying animation
 	public void dyingAnimation(Graphics2D g2) {
 		if (dyingCounter >= 35) {
@@ -237,6 +251,7 @@ public class Entity {
 		gameP.collisonC.checkItem(this, isCollison);
 		gameP.collisonC.checkEntity(this, gameP.itemC.npcs);
 		gameP.collisonC.checkEntity(this, gameP.itemC.monsters);
+		gameP.collisonC.checkEntity(this, gameP.iTiles);
 		boolean touched = gameP.collisonC.NPCTouchPlayer(this);
 		
 		if(this.name == "slime" && touched) {

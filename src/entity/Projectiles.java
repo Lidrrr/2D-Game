@@ -21,7 +21,7 @@ public class Projectiles extends Entity{
 		if(entity == gameP.player) {
 			int index = gameP.collisonC.checkEntity(this, gameP.itemC.monsters);
 			if(index != 999) {
-				gameP.player.damageMonster(index, attack);
+				gameP.player.damageMonster(index, gameP.player.projectileAttack);
 				living = false;
 			}
 		}

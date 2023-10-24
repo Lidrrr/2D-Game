@@ -12,7 +12,7 @@ public class Sword extends Entity{
 		name = "Sword";
 		down1 = setUpImages("/items/sword");
 		attackValue = 1;
-		attackArea =  new Rectangle(0, 0, 36, 36);
+		attackArea =  new Rectangle(0, 0, 24, 2);
 		isWeapon = true;
 		description = "a normal sword";
 	}

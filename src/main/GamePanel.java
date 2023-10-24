@@ -15,6 +15,7 @@ import entity.Entity;
 import entity.Player;
 import item.ItemController;
 import tile.TileController;
+import tile_interactive.TileInteractive;
 
 public class GamePanel extends JPanel implements Runnable{
 	final int tileSize = 16; // 16 x 16
@@ -53,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public CollisonCheck collisonC = new CollisonCheck(this);
 	public EventHandler eHandler = new EventHandler(this);
 	public ItemController itemC = new ItemController(this);
+	public TileInteractive iTiles[] = new TileInteractive[50];
 	public ArrayList<Entity> projectiles = new ArrayList<>();
 	ArrayList<Entity> entities = new ArrayList<Entity>();
 	
@@ -71,6 +73,7 @@ public class GamePanel extends JPanel implements Runnable{
 		itemC.createItems();
 		itemC.createNPCs();
 		itemC.createMonsters();
+		itemC.createInterativeTiles();
 		playMusic(0);
 		stopMusic();
 		gameState = menu;
@@ -113,13 +116,21 @@ public class GamePanel extends JPanel implements Runnable{
 			for(int i = 0; i < itemC.monsters.length; i++) {
 				if(itemC.monsters[i] != null) {
 					if(itemC.monsters[i].living && !itemC.monsters[i].dying) itemC.monsters[i].update();
-					else if(!itemC.monsters[i].living) itemC.monsters[i] = null;
+					else if(!itemC.monsters[i].living) {
+						itemC.monsters[i].dropAfterDie();
+						itemC.monsters[i] = null;
+					}
 				}
 			}
 			for(int i = 0; i < projectiles.size(); i++) {
 				if(projectiles.get(i) != null) {
 					if(projectiles.get(i).living) projectiles.get(i).update();
 					else projectiles.remove(i);
+				}
+			}
+			for(int i = 0; i < iTiles.length; i++) {
+				if(iTiles[i] != null) {
+					iTiles[i].update();
 				}
 			}
 		}
@@ -139,6 +150,13 @@ public class GamePanel extends JPanel implements Runnable{
 		else {
 			// tiles
 			tileC.draw(g2);
+			
+			//iterative tiles
+			for(int i = 0; i < iTiles.length; i++) {
+				if(iTiles[i] != null) {
+					iTiles[i].draw(g2);;
+				}
+			}
 			
 			// add entities
 			entities.add(player);

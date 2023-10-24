@@ -3,6 +3,7 @@ package monster;
 import java.util.Random;
 
 import entity.Entity;
+import item.Heart;
 import main.GamePanel;
 
 public class Slime extends Entity{
@@ -43,6 +44,12 @@ public class Slime extends Entity{
 	public void damageReact() {
 		entityCounter = 0;
 		direction = gameP.player.direction;
+	}
+	
+	// drop some items when player kills it
+	public void dropAfterDie() {
+		int i = new Random().nextInt(100)+1;
+		if(i<50) dropItem(new Heart(gameP));
 	}
 	
 	// slime behavior
